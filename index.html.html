@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Fundamentals Quiz — 50 Questions</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f0f4f8;color:#1a1a2e;min-height:100vh;padding:1rem}
+.quiz-wrap{max-width:700px;margin:0 auto;padding:1rem 0}
+.header{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.title{font-size:20px;font-weight:700;color:#1a237e}
+.score-badge{background:#e3f2fd;color:#1565c0;font-size:13px;font-weight:600;padding:5px 14px;border-radius:20px}
+.progress-bar{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#1565c0,#42a5f5);border-radius:4px;transition:width .4s ease}
+.prog-label{display:flex;justify-content:space-between;margin-top:5px;font-size:12px;color:#94a3b8}
+.question-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.q-meta{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.tag{font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px}
+.tag-topic{background:#e3f2fd;color:#1565c0}
+.tag-type{background:#f3e5f5;color:#7b1fa2}
+.q-num{font-size:12px;color:#94a3b8;margin-left:auto}
+.q-text{font-size:16px;line-height:1.65;color:#1a1a2e;margin-bottom:1rem;font-weight:500}
+.code-block{background:#eef2ff;border:1px solid #c7d2fe;border-left:4px solid #1565c0;border-radius:8px;padding:.65rem 1rem;font-family:'Courier New',monospace;font-size:14px;color:#1a237e;margin:.5rem 0 1rem;font-weight:700}
+.tbl-wrap{overflow-x:auto;margin-bottom:1rem;border-radius:10px;border:1px solid #e2e8f0}
+.tbl-name{font-size:12px;color:#64748b;margin-bottom:4px;font-style:italic}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#1565c0;color:#fff;padding:8px 12px;text-align:center;font-weight:600}
+td{padding:7px 12px;text-align:center;border-bottom:1px solid #e2e8f0;color:#374151}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#f0f7ff}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{display:flex;align-items:center;gap:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:.75rem 1rem;cursor:pointer;text-align:left;transition:all .15s;width:100%}
+.opt-btn:hover:not(:disabled){background:#eff6ff;border-color:#93c5fd;transform:translateX(3px)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;background:#e2e8f0;color:#64748b;transition:all .2s}
+.opt-text{font-size:14px;color:#374151;line-height:1.4}
+.opt-btn.correct{background:#f0fdf4;border-color:#4ade80}
+.opt-btn.correct .opt-letter{background:#16a34a;color:#fff}
+.opt-btn.correct .opt-text{color:#15803d;font-weight:600}
+.opt-btn.wrong{background:#fef2f2;border-color:#fca5a5}
+.opt-btn.wrong .opt-letter{background:#dc2626;color:#fff}
+.opt-btn.wrong .opt-text{color:#b91c1c}
+.opt-btn.reveal{background:#f0fdf4;border-color:#4ade80;opacity:.75}
+.opt-btn.reveal .opt-letter{background:#16a34a;color:#fff}
+.explanation{background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid #16a34a;border-radius:10px;padding:.85rem 1rem;margin-top:.85rem;font-size:14px;color:#374151;line-height:1.6;display:none}
+.explanation.show{display:block}
+.exp-label{font-weight:700;color:#15803d;margin-bottom:5px;font-size:13px}
+.nav-row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:.5rem}
+.nav-btn{padding:.6rem 1.25rem;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;color:#374151;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;transition:all .15s}
+.nav-btn:hover:not(:disabled){background:#f1f5f9;border-color:#94a3b8}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.primary{background:#1565c0;color:#fff;border-color:#1565c0}
+.nav-btn.primary:hover{background:#1e40af;border-color:#1e40af}
+.q-counter{font-size:13px;color:#94a3b8;font-weight:500}
+.results{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:2.5rem;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.results-icon{font-size:56px;margin-bottom:.5rem}
+.results-score{font-size:52px;font-weight:800;color:#1565c0;margin-bottom:.25rem}
+.results-label{font-size:16px;color:#64748b;margin-bottom:2rem;line-height:1.5}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:2rem}
+.stat-card{border-radius:12px;padding:1rem;border:1px solid #e2e8f0}
+.stat-val{font-size:28px;font-weight:700}
+.stat-lbl{font-size:12px;color:#64748b;margin-top:3px}
+.stat-card.c{background:#f0fdf4;border-color:#bbf7d0}.stat-card.c .stat-val{color:#16a34a}
+.stat-card.w{background:#fef2f2;border-color:#fecaca}.stat-card.w .stat-val{color:#dc2626}
+.stat-card.p{background:#eff6ff;border-color:#bfdbfe}.stat-card.p .stat-val{color:#1d4ed8}
+.hidden{display:none}
+.cover{background:#fff;border-radius:16px;padding:3rem 2rem;text-align:center;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.cover h1{font-size:28px;font-weight:800;color:#1a237e;margin-bottom:.5rem}
+.cover p{color:#64748b;font-size:15px;margin-bottom:1.5rem;line-height:1.6}
+.topics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:2rem;text-align:left}
+.topic-pill{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:.6rem 1rem;font-size:13px;font-weight:600;color:#1d4ed8}
+@media(max-width:500px){.stats-grid{grid-template-columns:1fr}.topics-grid{grid-template-columns:1fr}.header-top{flex-direction:column;gap:.5rem;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="quiz-wrap">
+  <div id="cover">
+    <div class="cover">
+      <div style="font-size:48px;margin-bottom:1rem">🗄️</div>
+      <h1>SQL Fundamentals Quiz</h1>
+      <p>50 questions covering core SQL concepts.<br>Each question has instant feedback and an explanation.</p>
+      <div class="topics-grid">
+        <div class="topic-pill">📋 SELECT</div>
+        <div class="topic-pill">📋 SELECT ALL</div>
+        <div class="topic-pill">✨ SELECT DISTINCT</div>
+        <div class="topic-pill">🏷️ AS (Alias)</div>
+        <div class="topic-pill">🔍 WHERE</div>
+        <div class="topic-pill">⚡ AND / OR</div>
+        <div class="topic-pill">📝 IN</div>
+        <div class="topic-pill">↔️ BETWEEN</div>
+        <div class="topic-pill">🔎 LIKE</div>
+        <div class="topic-pill">↕️ ORDER BY</div>
+      </div>
+      <button class="nav-btn primary" style="font-size:16px;padding:.8rem 2.5rem" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+  </div>
+  <div id="quiz-area" class="hidden">
+    <div class="header">
+      <div class="header-top">
+        <span class="title">SQL Fundamentals Quiz</span>
+        <span class="score-badge" id="score-badge">Score: 0 / 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+      <div class="prog-label"><span id="prog-text">Question 1 of 50</span><span id="prog-pct">0%</span></div>
+    </div>
+    <div id="q-area"></div>
+  </div>
+  <div id="results" class="results hidden">
+    <div class="results-icon" id="r-icon"></div>
+    <div class="results-score" id="r-score"></div>
+    <div class="results-label" id="r-label"></div>
+    <div class="stats-grid">
+      <div class="stat-card c"><div class="stat-val" id="r-correct"></div><div class="stat-lbl">Correct ✓</div></div>
+      <div class="stat-card w"><div class="stat-val" id="r-wrong"></div><div class="stat-lbl">Wrong ✗</div></div>
+      <div class="stat-card p"><div class="stat-val" id="r-pct"></div><div class="stat-lbl">Final Score</div></div>
+    </div>
+    <button class="nav-btn primary" style="font-size:15px;padding:.75rem 2rem" onclick="restart()">🔄 Retake Quiz</button>
+  </div>
+</div>
+<script>
+const Q=[
+{n:1,topic:"SELECT",type:"Conceptual",q:"What is the purpose of the SELECT statement in SQL?",opts:["It deletes rows from a table","It retrieves data from one or more tables","It creates a new table in the database","It updates existing records in a table"],ans:1,exp:"SELECT is used to query and retrieve data from a database. It does NOT modify data.",tbl:null},
+{n:2,topic:"SELECT",type:"Write the Statement",q:"Which SQL statement retrieves ALL columns for every row in the Employees table?",opts:["SELECT Employees;","SELECT ALL FROM Employees;","SELECT * FROM Employees;","GET * FROM Employees;"],ans:2,exp:"SELECT * FROM table_name retrieves all columns from a table.",tbl:{name:"Employees",h:["EmpID","Name","Department","Salary"],r:[["1","Ali","IT","5000"],["2","Sara","HR","4500"],["3","Omar","Finance","6000"]]}},
+{n:3,topic:"SELECT",type:"Complete the Statement",q:"Complete the statement to retrieve only the Name and Salary columns:",code:"_____ Name, Salary FROM Employees;",opts:["GET","FETCH","SELECT","RETRIEVE"],ans:2,exp:"SELECT is the correct SQL keyword to start a query that retrieves specific columns.",tbl:null},
+{n:4,topic:"SELECT",type:"Find the Error",q:"Which of the following statements has a SYNTAX ERROR?",opts:["SELECT Name FROM Employees;","SELECT * FROM Employees;","SELECT Name, Salary FROM Employees;","SELECT FROM * Employees;"],ans:3,exp:"Option D has incorrect syntax — * must come before FROM. Correct: SELECT * FROM Employees;",tbl:null},
+{n:5,topic:"SELECT",type:"Predict the Output",q:"What does the following query return?",code:"SELECT Name FROM Employees;",opts:["All columns for all rows","Only the Name column for all rows","Only rows where Name is not null","The number of employees"],ans:1,exp:"SELECT Name returns only the Name column. No WHERE clause means all rows are included.",tbl:{name:"Employees",h:["EmpID","Name","Department"],r:[["1","Ali","IT"],["2","Sara","HR"],["3","Omar","Finance"]]}},
+{n:6,topic:"SELECT",type:"Predict the Output",q:"How many columns does this query return?",code:"SELECT EmpID, Name, Salary FROM Employees;",opts:["1 column","2 columns","3 columns","All columns"],ans:2,exp:"The query explicitly lists 3 columns: EmpID, Name, and Salary.",tbl:null},
+{n:7,topic:"SELECT ALL",type:"Conceptual",q:"What does SELECT ALL do in SQL?",opts:["Returns only unique values","Returns all rows including duplicates (default behavior)","Selects all tables in the database","Filters rows with all conditions true"],ans:1,exp:"SELECT ALL is the default — it returns every row including duplicates. It is rarely written explicitly.",tbl:null},
+{n:8,topic:"SELECT ALL",type:"Conceptual",q:"Which two statements produce the SAME result?",opts:["SELECT ALL City FROM Orders  vs  SELECT DISTINCT City FROM Orders","SELECT City FROM Orders  vs  SELECT ALL City FROM Orders","SELECT * FROM Orders  vs  SELECT ALL * FROM Orders WHERE City='Baghdad'","SELECT ALL FROM Orders  vs  SELECT * FROM Orders"],ans:1,exp:"SELECT ALL is the default, so SELECT City and SELECT ALL City are identical.",tbl:null},
+{n:9,topic:"SELECT ALL",type:"Predict the Output",q:"How many rows does this return?",code:"SELECT ALL Department FROM Employees;",opts:["2 rows","3 rows","4 rows","5 rows"],ans:2,exp:"SELECT ALL returns every row including duplicates. The table has 4 rows, so 4 rows are returned.",tbl:{name:"Employees",h:["EmpID","Name","Department"],r:[["1","Ali","IT"],["2","Sara","HR"],["3","Omar","IT"],["4","Lina","HR"]]}},
+{n:10,topic:"SELECT ALL",type:"Conceptual",q:"When would you explicitly write SELECT ALL instead of just SELECT?",opts:["When you need to filter duplicates","To improve query performance","To make code more readable and explicit about including duplicates","SELECT ALL is required syntax in all queries"],ans:2,exp:"SELECT ALL is written for clarity only. The behavior is identical to SELECT without ALL.",tbl:null},
+{n:11,topic:"SELECT DISTINCT",type:"Conceptual",q:"What does SELECT DISTINCT do?",opts:["Returns all rows including duplicates","Returns only unique (non-duplicate) values","Sorts the result in ascending order","Filters rows based on a condition"],ans:1,exp:"DISTINCT removes duplicate rows from the result set, returning only unique values.",tbl:null},
+{n:12,topic:"SELECT DISTINCT",type:"Predict the Output",q:"What is the output of:",code:"SELECT DISTINCT City FROM Orders;",opts:["Baghdad, Basra, Baghdad, Mosul","Baghdad, Basra, Mosul","Baghdad, Mosul","Basra, Mosul"],ans:1,exp:"DISTINCT removes the duplicate 'Baghdad', returning 3 unique cities: Baghdad, Basra, Mosul.",tbl:{name:"Orders",h:["OrderID","Customer","City"],r:[["101","Ahmed","Baghdad"],["102","Noor","Basra"],["103","Khalid","Baghdad"],["104","Lina","Mosul"]]}},
+{n:13,topic:"SELECT DISTINCT",type:"Write the Statement",q:"Write a query to get all unique job titles from the Staff table.",opts:["SELECT JobTitle FROM Staff;","SELECT UNIQUE JobTitle FROM Staff;","SELECT DISTINCT JobTitle FROM Staff;","SELECT ALL DISTINCT JobTitle FROM Staff;"],ans:2,exp:"SELECT DISTINCT column FROM table is the correct syntax for unique values.",tbl:{name:"Staff",h:["StaffID","Name","JobTitle"],r:[["1","Ali","Developer"],["2","Sara","Manager"],["3","Omar","Developer"],["4","Lina","Designer"]]}},
+{n:14,topic:"SELECT DISTINCT",type:"Find the Error",q:"Which statement will return an ERROR?",opts:["SELECT DISTINCT Name FROM Employees;","SELECT DISTINCT * FROM Employees;","SELECT DISTINCT Name, DISTINCT Department FROM Employees;","SELECT DISTINCT Department FROM Employees;"],ans:2,exp:"You cannot use DISTINCT twice. Correct: SELECT DISTINCT Name, Department FROM Employees;",tbl:null},
+{n:15,topic:"SELECT DISTINCT",type:"Predict the Output",q:"How many rows does this return?",code:"SELECT DISTINCT Score FROM Results;",opts:["1 row","2 rows","3 rows","4 rows"],ans:2,exp:"Unique scores are: 90, 85, 95 — 3 distinct values.",tbl:{name:"Results",h:["StudentID","Score"],r:[["1","90"],["2","85"],["3","90"],["4","95"]]}},
+{n:16,topic:"SELECT DISTINCT",type:"Conceptual",q:"What is the difference between SELECT and SELECT DISTINCT?",opts:["No difference — they return the same result","SELECT returns all rows; SELECT DISTINCT returns only unique rows","SELECT DISTINCT is faster than SELECT","SELECT DISTINCT sorts results automatically"],ans:1,exp:"SELECT returns all rows including duplicates. SELECT DISTINCT filters out duplicate rows.",tbl:null},
+{n:17,topic:"AS (Alias)",type:"Conceptual",q:"What is the role of the AS keyword in SQL?",opts:["It permanently renames a column in the database","It gives a temporary alias to a column or table in the result","It compares two values in a WHERE clause","It joins two tables together"],ans:1,exp:"AS creates a temporary alias for the query only. The actual column/table name stays unchanged.",tbl:null},
+{n:18,topic:"AS (Alias)",type:"Complete the Statement",q:"Complete the statement so Salary is displayed as 'Monthly Pay':",code:"SELECT Name, Salary _____ 'Monthly Pay' FROM Employees;",opts:["RENAME","CALLED","AS","LABEL"],ans:2,exp:"The correct keyword is AS: SELECT Name, Salary AS 'Monthly Pay' FROM Employees;",tbl:{name:"Employees",h:["EmpID","Name","Salary"],r:[["1","Ali","5000"],["2","Sara","4500"],["3","Omar","6000"]]}},
+{n:19,topic:"AS (Alias)",type:"Predict the Output",q:"What column heading appears in the result of:",code:"SELECT Name AS 'Employee Name' FROM Employees;",opts:["Name","AS","Employee Name","'Employee Name'"],ans:2,exp:"The AS alias replaces the column heading in the output with: Employee Name",tbl:null},
+{n:20,topic:"AS (Alias)",type:"Find the Error",q:"Which statement uses AS incorrectly?",opts:["SELECT Name AS 'Full Name' FROM Employees;","SELECT Salary AS Pay FROM Employees;","SELECT AS Name 'Employee' FROM Employees;","SELECT Department AS Dept FROM Employees;"],ans:2,exp:"AS must come AFTER the column name. Correct: SELECT Name AS 'Employee' FROM Employees;",tbl:null},
+{n:21,topic:"AS (Alias)",type:"Write the Statement",q:"Write a query that shows EmpID as 'ID' and Name as 'Full Name' from Employees.",opts:["SELECT EmpID 'ID', Name 'Full Name' FROM Employees;","SELECT EmpID AS 'ID', Name AS 'Full Name' FROM Employees;","SELECT AS EmpID 'ID', AS Name 'Full Name' FROM Employees;","SELECT EmpID RENAME 'ID', Name RENAME 'Full Name' FROM Employees;"],ans:1,exp:"Use AS after each column: SELECT EmpID AS 'ID', Name AS 'Full Name' FROM Employees;",tbl:null},
+{n:22,topic:"WHERE",type:"Conceptual",q:"What is the function of the WHERE clause?",opts:["It groups rows that have the same values","It specifies which table to query","It filters rows based on a specified condition","It sorts the result set"],ans:2,exp:"WHERE filters records, returning only rows that satisfy the given condition.",tbl:null},
+{n:23,topic:"WHERE",type:"Predict the Output",q:"How many rows does this query return?",code:"SELECT * FROM Products WHERE Price > 30;",opts:["1 row","2 rows","3 rows","4 rows"],ans:1,exp:"Only Laptop (999) and Headphones (45) have Price > 30, so 2 rows are returned.",tbl:{name:"Products",h:["ProductID","Name","Price"],r:[["1","Pen","2"],["2","Notebook","5"],["3","Laptop","999"],["4","Headphones","45"]]}},
+{n:24,topic:"WHERE",type:"Find the Error",q:"Which WHERE clause contains a SYNTAX ERROR?",opts:["WHERE Department = 'HR'","WHERE Salary >= 3000","WHERE Name LIKE '%Ali%'","WHERE = Department 'IT'"],ans:3,exp:"Column name must come before the operator. Correct: WHERE Department = 'IT'",tbl:null},
+{n:25,topic:"WHERE",type:"Write the Statement",q:"Write a query to get all employees in the 'Finance' department.",opts:["SELECT * FROM Employees WHERE 'Finance';","SELECT * FROM Employees WHERE Department IS 'Finance';","SELECT * FROM Employees WHERE Department = 'Finance';","SELECT * FROM Employees FILTER Department = 'Finance';"],ans:2,exp:"Use WHERE column = 'value': SELECT * FROM Employees WHERE Department = 'Finance';",tbl:null},
+{n:26,topic:"WHERE",type:"Predict the Output",q:"What is the output of:",code:"SELECT Name FROM Employees WHERE Salary = 4500;",opts:["Ali","Sara","Omar","No rows returned"],ans:1,exp:"Only Sara has Salary = 4500, so only her name is returned.",tbl:{name:"Employees",h:["EmpID","Name","Salary"],r:[["1","Ali","5000"],["2","Sara","4500"],["3","Omar","6000"]]}},
+{n:27,topic:"WHERE",type:"Conceptual",q:"Which comparison operators can be used in a WHERE clause?",opts:["Only = and !=","Only > and <","=, !=, >, <, >=, <=","Only = and >"],ans:2,exp:"WHERE supports all standard comparison operators: =, !=, >, <, >=, <=",tbl:null},
+{n:28,topic:"AND / OR",type:"Conceptual",q:"What is the difference between AND and OR in a WHERE clause?",opts:["AND returns rows where at least one condition is true","AND requires ALL conditions to be true; OR requires at least ONE to be true","AND and OR work the same way","AND is for numbers only; OR is for text only"],ans:1,exp:"AND narrows results (all must match). OR broadens results (any one match is enough).",tbl:null},
+{n:29,topic:"AND / OR",type:"Predict the Output",q:"How many rows does this return?",code:"SELECT * FROM Employees WHERE Department='IT' AND Salary > 5000;",opts:["0 rows","1 row","2 rows","3 rows"],ans:1,exp:"Only Omar is in IT with Salary > 5000 (6500). So 1 row is returned.",tbl:{name:"Employees",h:["EmpID","Name","Department","Salary"],r:[["1","Ali","IT","5000"],["2","Sara","HR","4500"],["3","Omar","IT","6500"],["4","Lina","Finance","7000"]]}},
+{n:30,topic:"AND / OR",type:"Write the Statement",q:"Write a query to get employees in 'HR' OR with Salary > 6000.",opts:["SELECT * FROM Employees WHERE Department='HR' AND Salary > 6000;","SELECT * FROM Employees WHERE Department='HR' OR Salary > 6000;","SELECT * FROM Employees WHERE Department='HR' OR WHERE Salary > 6000;","SELECT * FROM Employees WHERE (Department='HR') ELSE (Salary > 6000);"],ans:1,exp:"Use OR between conditions: WHERE Department='HR' OR Salary > 6000;",tbl:null},
+{n:31,topic:"AND / OR",type:"Find the Error",q:"Which statement has a SYNTAX ERROR?",opts:["WHERE Age > 18 AND City = 'Basra'","WHERE Name = 'Ali' OR Name = 'Sara'","WHERE Salary > 3000 AND < 7000","WHERE Department = 'IT' AND Salary >= 5000"],ans:2,exp:"Correct form: WHERE Salary > 3000 AND Salary < 7000. The column name must be repeated.",tbl:null},
+{n:32,topic:"AND / OR",type:"Predict the Output",q:"How many rows does this return?",code:"SELECT * FROM Students WHERE Grade='A' OR Grade='B';",opts:["1 row","2 rows","3 rows","4 rows"],ans:2,exp:"Ahmed (A), Noor (B), and Khalid (A) match. Lina (C) does not. So 3 rows.",tbl:{name:"Students",h:["StudentID","Name","Grade"],r:[["1","Ahmed","A"],["2","Noor","B"],["3","Khalid","A"],["4","Lina","C"]]}},
+{n:33,topic:"IN",type:"Conceptual",q:"What does the IN operator do in SQL?",opts:["Checks if a value is between two numbers","Checks if a value matches ANY value in a list","Checks if a value contains a specific pattern","Joins two tables together"],ans:1,exp:"IN checks if a column value matches any value in a specified list.",tbl:null},
+{n:34,topic:"IN",type:"Write the Statement",q:"Write a query to get employees in 'IT', 'HR', or 'Finance' departments.",opts:["SELECT * FROM Employees WHERE Department = 'IT' OR 'HR' OR 'Finance';","SELECT * FROM Employees WHERE Department IN ('IT','HR','Finance');","SELECT * FROM Employees WHERE Department CONTAINS ('IT','HR','Finance');","SELECT * FROM Employees WHERE Department = ('IT','HR','Finance');"],ans:1,exp:"IN accepts a list: WHERE Department IN ('IT', 'HR', 'Finance');",tbl:null},
+{n:35,topic:"IN",type:"Predict the Output",q:"How many rows does this return?",code:"SELECT * FROM Products WHERE Category IN ('Electronics','Books');",opts:["1 row","2 rows","3 rows","4 rows"],ans:2,exp:"Laptop (Electronics), Phone (Electronics), and SQL Guide (Books) match — 3 rows.",tbl:{name:"Products",h:["ProductID","Name","Category"],r:[["1","Laptop","Electronics"],["2","Phone","Electronics"],["3","Pen","Stationery"],["4","SQL Guide","Books"]]}},
+{n:36,topic:"IN",type:"Find the Error",q:"Which IN statement has a SYNTAX ERROR?",opts:["WHERE City IN ('Baghdad','Basra','Mosul')","WHERE ID IN (1,2,3)","WHERE Name IN 'Ali','Sara'","WHERE Score IN (90,85,95)"],ans:2,exp:"The list must be in parentheses. Correct: WHERE Name IN ('Ali','Sara')",tbl:null},
+{n:37,topic:"BETWEEN",type:"Conceptual",q:"What does the BETWEEN operator do?",opts:["Selects values outside a specified range","Selects values within a range (inclusive of both endpoints)","Selects only the minimum and maximum values","Checks if a value is in a list"],ans:1,exp:"BETWEEN selects values within a range, INCLUDING the start and end values.",tbl:null},
+{n:38,topic:"BETWEEN",type:"Predict the Output",q:"How many rows does this return?",code:"SELECT * FROM Employees WHERE Salary BETWEEN 4000 AND 6000;",opts:["1 row","2 rows","3 rows","4 rows"],ans:2,exp:"Ali (5000), Sara (4500), and Omar (6000) are all within 4000–6000 inclusive. 3 rows.",tbl:{name:"Employees",h:["EmpID","Name","Salary"],r:[["1","Ali","5000"],["2","Sara","4500"],["3","Omar","6000"],["4","Lina","7500"]]}},
+{n:39,topic:"BETWEEN",type:"Write the Statement",q:"Write a query to get orders placed between Jan 1 and Mar 31, 2024.",opts:["SELECT * FROM Orders WHERE OrderDate FROM '2024-01-01' TO '2024-03-31';","SELECT * FROM Orders WHERE OrderDate BETWEEN '2024-01-01' AND '2024-03-31';","SELECT * FROM Orders WHERE OrderDate > '2024-01-01' < '2024-03-31';","SELECT * FROM Orders WHERE OrderDate IN ('2024-01-01','2024-03-31');"],ans:1,exp:"BETWEEN works with dates too: WHERE OrderDate BETWEEN '2024-01-01' AND '2024-03-31';",tbl:null},
+{n:40,topic:"BETWEEN",type:"Find the Error",q:"Which BETWEEN statement has a SYNTAX ERROR?",opts:["WHERE Age BETWEEN 18 AND 30","WHERE Price BETWEEN 100 AND 500","WHERE Salary BETWEEN AND 3000 6000","WHERE Score BETWEEN 60 AND 100"],ans:2,exp:"Correct order: WHERE Salary BETWEEN 3000 AND 6000. The lower value must come first after BETWEEN.",tbl:null},
+{n:41,topic:"LIKE",type:"Conceptual",q:"What does the LIKE operator do in SQL?",opts:["Checks for exact value matches","Searches for a pattern in a column","Checks if a value is in a list","Compares two numeric values"],ans:1,exp:"LIKE is used with wildcards (% and _) to search for patterns in text.",tbl:null},
+{n:42,topic:"LIKE",type:"Predict the Output",q:"Which names are returned by:",code:"SELECT Name FROM Employees WHERE Name LIKE 'A%';",opts:["Ali, Ahmed","Ali only","Ali, Ahmed, Amira","No rows returned"],ans:2,exp:"'A%' matches any name starting with A. Ali, Ahmed, and Amira all start with A.",tbl:{name:"Employees",h:["EmpID","Name"],r:[["1","Ali"],["2","Sara"],["3","Ahmed"],["4","Omar"],["5","Amira"]]}},
+{n:43,topic:"LIKE",type:"Write the Statement",q:"Write a query to find all products whose name contains the word 'Pro'.",opts:["SELECT * FROM Products WHERE Name = 'Pro';","SELECT * FROM Products WHERE Name CONTAINS 'Pro';","SELECT * FROM Products WHERE Name LIKE '%Pro%';","SELECT * FROM Products WHERE Name STARTS WITH 'Pro';"],ans:2,exp:"Use %Pro% to match 'Pro' anywhere in the name: WHERE Name LIKE '%Pro%'",tbl:null},
+{n:44,topic:"LIKE",type:"Complete the Statement",q:"Complete the query to find names ending in 'a':",code:"SELECT Name FROM Employees WHERE Name LIKE _____;",opts:["'a'","'a%'","'%a'","'_a'"],ans:2,exp:"'%a' means: any characters followed by 'a' at the end. Sara, Amira, Lina would match.",tbl:null},
+{n:45,topic:"ORDER BY",type:"Conceptual",q:"What does the ORDER BY clause do?",opts:["It filters rows based on a condition","It groups rows with the same values","It sorts the result set by one or more columns","It limits the number of rows returned"],ans:2,exp:"ORDER BY sorts the query results. Default order is ASC (ascending).",tbl:null},
+{n:46,topic:"ORDER BY",type:"Predict the Output",q:"What is the FIRST row returned by:",code:"SELECT * FROM Employees ORDER BY Salary ASC;",opts:["Ali (5000)","Sara (4500)","Omar (6000)","Lina (7500)"],ans:1,exp:"ASC = lowest to highest. Sara has the lowest Salary (4500), so she appears first.",tbl:{name:"Employees",h:["EmpID","Name","Salary"],r:[["1","Ali","5000"],["2","Sara","4500"],["3","Omar","6000"],["4","Lina","7500"]]}},
+{n:47,topic:"ORDER BY",type:"Write the Statement",q:"Write a query to get all products sorted by Price from highest to lowest.",opts:["SELECT * FROM Products ORDER BY Price;","SELECT * FROM Products ORDER BY Price ASC;","SELECT * FROM Products ORDER BY Price DESC;","SELECT * FROM Products SORT BY Price DESC;"],ans:2,exp:"DESC = descending (highest to lowest): SELECT * FROM Products ORDER BY Price DESC;",tbl:null},
+{n:48,topic:"ORDER BY",type:"Complete the Statement",q:"Complete the query to sort employees alphabetically by Name (A to Z):",code:"SELECT * FROM Employees ORDER BY Name _____;",opts:["DESC","ASCENDING","ASC","SORT"],ans:2,exp:"ASC (ascending) sorts A to Z alphabetically. It is the default but can be written explicitly.",tbl:null},
+{n:49,topic:"ORDER BY",type:"Find the Error",q:"Which ORDER BY statement has a SYNTAX ERROR?",opts:["ORDER BY Name ASC","ORDER BY Salary DESC","ORDER BY Name, Salary ASC","SORT BY Name ASC"],ans:3,exp:"SORT BY is not valid SQL. The correct keyword is ORDER BY.",tbl:null},
+{n:50,topic:"ORDER BY",type:"Predict the Output",q:"What is the order of students returned by:",code:"SELECT Name FROM Students ORDER BY Score DESC;",opts:["Ahmed, Noor, Khalid","Khalid, Noor, Ahmed","Noor, Ahmed, Khalid","Ahmed, Khalid, Noor"],ans:0,exp:"DESC = highest to lowest. Ahmed (95) > Noor (90) > Khalid (80). So: Ahmed, Noor, Khalid.",tbl:{name:"Students",h:["StudentID","Name","Score"],r:[["1","Ahmed","95"],["2","Noor","90"],["3","Khalid","80"]]}}
+];
+let cur=0,correct=0,wrong=0,answered=[];
+function startQuiz(){document.getElementById('cover').classList.add('hidden');document.getElementById('quiz-area').classList.remove('hidden');render();}
+function render(){
+  const q=Q[cur];
+  const prog=(cur/50)*100;
+  document.getElementById('prog').style.width=prog+'%';
+  document.getElementById('prog-text').textContent='Question '+(cur+1)+' of 50';
+  document.getElementById('prog-pct').textContent=Math.round(prog)+'%';
+  document.getElementById('score-badge').textContent='Score: '+correct+' / '+(correct+wrong);
+  const letters=['A','B','C','D'];
+  let html='<div class="question-card">';
+  html+='<div class="q-meta"><span class="tag tag-topic">'+q.topic+'</span><span class="tag tag-type">'+q.type+'</span><span class="q-num">Q'+String(q.n).padStart(2,'0')+' / 50</span></div>';
+  html+='<div class="q-text">'+q.q+'</div>';
+  if(q.code)html+='<div class="code-block">'+q.code+'</div>';
+  if(q.tbl){
+    html+='<div class="tbl-name">Table: '+q.tbl.name+'</div><div class="tbl-wrap"><table><tr>'+q.tbl.h.map(h=>'<th>'+h+'</th>').join('')+'</tr>';
+    q.tbl.r.forEach(r=>{html+='<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>';});
+    html+='</table></div>';
+  }
+  html+='<div class="options">';
+  q.opts.forEach((o,i)=>{ html+='<button class="opt-btn" onclick="pick('+i+')" id="opt'+i+'"><span class="opt-letter">'+letters[i]+'</span><span class="opt-text">'+o+'</span></button>'; });
+  html+='</div>';
+  html+='<div class="explanation" id="exp"><div class="exp-label">✓ Explanation</div>'+q.exp+'</div>';
+  html+='</div>';
+  html+='<div class="nav-row">';
+  html+='<button class="nav-btn" onclick="go(-1)"'+(cur===0?' disabled':'')+'>← Previous</button>';
+  html+='<span class="q-counter">'+(cur+1)+' / 50</span>';
+  if(cur<49)html+='<button class="nav-btn primary" onclick="go(1)">Next →</button>';
+  else html+='<button class="nav-btn primary" onclick="finish()">Finish Quiz ✓</button>';
+  html+='</div>';
+  document.getElementById('q-area').innerHTML=html;
+  if(answered[cur]!==undefined)revealAnswer(answered[cur]);
+}
+function pick(i){
+  if(answered[cur]!==undefined)return;
+  if(i===Q[cur].ans)correct++;else wrong++;
+  answered[cur]=i;revealAnswer(i);
+}
+function revealAnswer(chosen){
+  const q=Q[cur];
+  for(let i=0;i<4;i++){
+    const b=document.getElementById('opt'+i);
+    if(!b)continue;
+    b.disabled=true;
+    if(i===q.ans)b.classList.add(chosen===i?'correct':'reveal');
+    else if(i===chosen)b.classList.add('wrong');
+  }
+  const e=document.getElementById('exp');
+  if(e)e.classList.add('show');
+}
+function go(d){cur=Math.max(0,Math.min(49,cur+d));render();}
+function finish(){
+  document.getElementById('quiz-area').classList.add('hidden');
+  const r=document.getElementById('results');r.classList.remove('hidden');
+  const pct=Math.round((correct/50)*100);
+  document.getElementById('r-score').textContent=correct+'/50';
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=wrong;
+  document.getElementById('r-pct').textContent=pct+'%';
+  let icon='',label='';
+  if(pct>=90){icon='🏆';label='Excellent! You have strong SQL fundamentals.';}
+  else if(pct>=70){icon='👍';label='Good work! Review the questions you missed.';}
+  else if(pct>=50){icon='📚';label='Keep practicing — you are making progress.';}
+  else{icon='💪';label='Keep studying — revisit each topic and try again.';}
+  document.getElementById('r-icon').textContent=icon;
+  document.getElementById('r-label').textContent=label;
+}
+function restart(){
+  cur=0;correct=0;wrong=0;answered=[];
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('quiz-area').classList.remove('hidden');
+  document.getElementById('prog').style.width='0%';
+  document.getElementById('score-badge').textContent='Score: 0 / 0';
+  render();
+}
+</script>
+</body>
+</html>
